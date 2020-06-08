@@ -4,31 +4,29 @@ services:
   - docker
 
 before_install:
-  - docker build -t nanda1505/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t sriniv23/react-test -f ./client/Dockerfile.dev ./client
 
-scripts:
-  - docker run -e CI=true nanda1505/react-test npm test
+script:
+  - docker run -e CI=true sriniv23/react-test npm test
 
 after_success:
-  - docker build -t nanda1505/multi-client ./client
-  - docker build -t nanda1505/multi-nginx ./nginx
-  - docker build -t nanda1505/multi-server ./server
-  - docker build -t nanda1505/multi-worker ./worker
-  # Log in to the docker CLI
+  - docker build -t sriniv23/multi-client ./client
+  - docker build  -t sriniv23/multi-nginx ./nginx
+  - docker build -t sriniv23/multi-server ./server
+  - docker build -t sriniv23/multi-worker ./worker
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  # Take the images and push them docker hub
-  - docker push nanda1505/multi-client
-  - docker push nanda1505/multi-nginx
-  - docker push nanda1505/multi-server
-  - docker push nanda1505/multi-worker
+  - docker push sriniv23/multi-client
+  - docker push sriniv23/multi-nginx
+  - docker push sriniv23/multi-server
+  - docker push sriniv23/multi-worker
 
 deploy:
   edge: true
   provider: elasticbeanstalk
   region: us-west-2
   app: multi-docker
-  env: MultiDocker-env
-  bucket_name: elasticbeanstalk-us-west-2-314498043024
+  env: MultiDocker-env-1
+  bucket_name: elasticbeanstalk-us-west-2-139793558214
   bucket_path: docker-multi
   on:
     branch: master
